@@ -21,16 +21,25 @@ const store = tx.objectStore('jate');
 
 await store.add(content);
 await tx.done;
-
+}
 catch (error) {
   console.error('putDb failed', error);
-}
 };
 
-
-
-
-// TODO: Add logic for a method that gets all the content from the database
 export const getDb = async () => console.error('getDb not implemented');
+
+try {
+const contactDb = await openDB('jate', 1);
+const tx = contactDb.transaction('jate', 'readonly');
+const store = tx.objectStore('jate');
+const content = await store.getAll();
+await tx.done;
+
+return content;
+} catch (error) {
+console.error('getDb failed', error);
+return [];
+};
+
 
 initdb();
