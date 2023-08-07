@@ -27,11 +27,11 @@ warmStrategyCache({
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
 registerRoute(
-  ({url}) => url.pathname.endsWith('.js') || url.pathname.endsWith('.css'),
-  new CacheFirst({
+  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
+  new StaleWhileRevalidate({
     cacheName: 'asset-cache',
     plugins: [
-      new ExpirationPlugin({
+      new CacheableResponsePlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
       }),
     ],
