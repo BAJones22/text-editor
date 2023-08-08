@@ -12,35 +12,26 @@ const initdb = async () =>
     },
   });
 
-export const putDb = async (content) => console.error('putDb not implemented');
+export const putDb = async (content) => {
+console.log('console is running');
 
-try {
-const contactDb = await openDB('jate', 1);
-const tx = contactDb.transaction('jate', 'readwrite');
+const jateDb = await openDB('jate', 1);
+const tx =jateDb.transaction('jate', 'readwrite');
 const store = tx.objectStore('jate');
 
-await store.add(content);
-await tx.done;
-}
-catch (error) {
-  console.error('putDb failed', error);
+const request = store.put({ id: 1, value: content });
+const result = await request;
 };
 
 export const getDb = async () => {
 
-try {
-const contactDb = await openDB('jate', 1);
-const tx = contactDb.transaction('jate', 'readonly');
+const jateDb = await openDB('jate', 1);
+const tx = jateDb.transaction('jate', 'readonly');
 const store = tx.objectStore('jate');
-const allContent = await store.getAll();
-await tx.done;
+const allContent = await store.get(1);
+const result = await allContent;
 
-return allContent;
-} catch (error) {
-console.error('getDb failed', error);
-return [];
-}
-};
-
+return result?.value ?? '';
+} 
 
 initdb();
