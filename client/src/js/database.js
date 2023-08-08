@@ -26,19 +26,20 @@ catch (error) {
   console.error('putDb failed', error);
 };
 
-export const getDb = async () => console.error('getDb not implemented');
+export const getDb = async () => {
 
 try {
 const contactDb = await openDB('jate', 1);
 const tx = contactDb.transaction('jate', 'readonly');
 const store = tx.objectStore('jate');
-const content = await store.getAll();
+const allContent = await store.getAll();
 await tx.done;
 
-return content;
+return allContent;
 } catch (error) {
 console.error('getDb failed', error);
 return [];
+}
 };
 
 
